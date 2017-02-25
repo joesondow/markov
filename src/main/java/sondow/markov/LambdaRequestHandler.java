@@ -1,4 +1,4 @@
-package sondow.twitter;
+package sondow.markov;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;

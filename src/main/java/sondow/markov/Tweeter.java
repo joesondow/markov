@@ -1,4 +1,4 @@
-package sondow.twitter;
+package sondow.markov;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
