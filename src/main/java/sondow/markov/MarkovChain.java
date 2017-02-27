@@ -1,16 +1,13 @@
 package sondow.markov;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Generates semi-random, semi-coherent phrases based on a source corpus of text. Written mostly by @veryphatic
+ * Generates semi-random, semi-coherent phrases based on a source corpus of text. Written by @veryphatic
  * https://gist.github.com/veryphatic/3190969 with modifications by @JoeSondow.
  *
  * @author @veryphatic
@@ -31,69 +28,97 @@ public class MarkovChain {
         wordsToSuffixes.put(END, new ArrayList<String>());
     }
 
-    // public void load(String corpus) {
-    //
-    // }
-    //
-    // public void load(InputStream inputStream) {
-    //
-    // }
-
-    public void loadCorpus(File file) throws IOException {
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            processLine(line);
+    /**
+     * A way to view the contents of the markov data structure for debugging purposes.
+     */
+    public void dump() {
+        for (String key : wordsToSuffixes.keySet()) {
+            List<String> values = wordsToSuffixes.get(key);
+            System.out.println(key + ": " + values);
         }
-
     }
 
     /**
-     * Process a line of text from the source corpus, to add to the markov data set.
+     * Fills in the markov data structure from a corpus of text input in the form of a list of strings.
      *
-     * @param line the line to process
+     * @param corpus the source text
+     * @return this MarkovChain, for method chaining
      */
-    private void processLine(String line) {
-        String[] words = line.split("\\s+");
-        if (words.length >= 1) {
+    public MarkovChain loadCorpus(List<String> corpus) {
+        for (String phrase : corpus) {
+            processPhrase(phrase);
+        }
+        return this;
+    }
+
+    /**
+     * Process a unit of text from the source corpus, to add to the markov data set.
+     *
+     * @param phrase the phrase to process
+     */
+    private void processPhrase(String phrase) {
+        String[] words = phrase.split("\\s+");
+        if (words.length >= 2) {
 
             for (int i = 0; i < words.length; i++) {
-                String word = words[i];
-                if (i == 0 && words.length > 1) {
-                    wordsToSuffixes.get(START).add(word);
-                    List<String> optionsForNextWord = wordsToSuffixes.get(words[i]);
-                    if (optionsForNextWord == null) {
-                        optionsForNextWord = new ArrayList<String>();
-                        optionsForNextWord.add(words[i + 1]);
-                        wordsToSuffixes.put(word, optionsForNextWord);
+                String thisWord = words[i];
+                int finalIndex = words.length - 1;
+                String nextWord = null;
+                if (i < finalIndex) {
+                    nextWord = words[i + 1];
+                }
+
+                // Omit twitter usernames. I don't want my bots talking to every person I've ever talked to.
+                // I also don't want links to things, and I don't want to spam any hashtags I've used before.
+                List<String> prefixBlacklist = Arrays.asList("@", "\"@", "http", "#", "\"#");
+
+                boolean skipThisWord = false;
+                for (String unwantedPrefix : prefixBlacklist) {
+                    if (thisWord.startsWith(unwantedPrefix)) {
+                        skipThisWord = true;
+                        break;
                     }
-                } else if (i == words.length - 1) {
-                    wordsToSuffixes.get(END).add(words[i]);
-                } else {
-                    List<String> suffix = wordsToSuffixes.get(words[i]);
-                    if (suffix == null) {
-                        suffix = new ArrayList<String>();
+                }
+                boolean skipNextWord = (nextWord == null);
+                if (nextWord != null) {
+                    for (String unwantedPrefix : prefixBlacklist) {
+                        if (nextWord.startsWith(unwantedPrefix)) {
+                            skipNextWord = true;
+                            break;
+                        }
                     }
-                    suffix.add(words[i + 1]);
-                    wordsToSuffixes.put(words[i], suffix);
+                }
+
+                if (!skipThisWord) {
+                    if (i == finalIndex) {
+                        wordsToSuffixes.get(END).add(thisWord);
+                    } else {
+                        if (i == 0) {
+                            wordsToSuffixes.get(START).add(thisWord);
+                        }
+                        if (!skipNextWord) {
+                            List<String> optionsForNextWord = wordsToSuffixes.get(thisWord);
+                            if (optionsForNextWord == null) {
+                                optionsForNextWord = new ArrayList<String>();
+                            }
+                            optionsForNextWord.add(nextWord);
+                            wordsToSuffixes.put(thisWord, optionsForNextWord);
+                        }
+                    }
                 }
             }
         }
     }
 
-    /*
-     * Generate a markov phrase.
+    /**
+     * Generates a markov phrase.
      */
-    public void generatePhrase() {
+    public String generatePhrase() {
 
-        List<String> newPhrase = new ArrayList<String>();
-        String nextWord = "";
-
-        // Select the first word
+        List<String> phrase = new ArrayList<String>();
         List<String> startWords = wordsToSuffixes.get(START);
-        nextWord = random.oneOf(startWords);
-        newPhrase.add(nextWord);
+        String nextWord = random.oneOf(startWords);
+        phrase.add(nextWord);
 
         boolean suffixFound = true;
         while (suffixFound) {
@@ -102,14 +127,10 @@ public class MarkovChain {
                 suffixFound = false;
             } else {
                 nextWord = random.oneOf(options);
-                newPhrase.add(nextWord);
+                phrase.add(nextWord);
             }
         }
 
-        System.out.println("New phrase: " + String.join(" ", newPhrase));
-    }
-
-    public void readCsvFile() {
-        // Sigh. Do this. Or JSON.
+        return String.join(" ", phrase);
     }
 }
