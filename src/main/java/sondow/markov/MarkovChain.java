@@ -70,7 +70,7 @@ public class MarkovChain {
 
                 // Omit twitter usernames. I don't want my bots talking to every person I've ever talked to.
                 // I also don't want links to things, and I don't want to spam any hashtags I've used before.
-                List<String> prefixBlacklist = Arrays.asList("@", "\"@", "http", "#", "\"#");
+                List<String> prefixBlacklist = Arrays.asList("@", "\"@", ".@", "http", "#", "\"#");
 
                 boolean skipThisWord = false;
                 for (String unwantedPrefix : prefixBlacklist) {
