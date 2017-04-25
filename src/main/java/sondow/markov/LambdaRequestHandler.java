@@ -75,6 +75,6 @@ public class LambdaRequestHandler implements RequestHandler<Object, Object> {
      */
     public static void main(String[] args) {
         LambdaRequestHandler handler = new LambdaRequestHandler();
-        handler.handleRequest(new Object(), new TestContext());
+        handler.handleRequest(null, null);
     }
 }
