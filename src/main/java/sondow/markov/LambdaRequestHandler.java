@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -62,7 +63,7 @@ public class LambdaRequestHandler implements RequestHandler<Object, Object> {
         cb.setOAuthAccessTokenSecret(System.getenv(targetAccount + "_twitter4j_oauth_accessTokenSecret"));
         Configuration config = cb.setTrimUserEnabled(true).build();
 
-        String message = new TweetGenerator().loadAndGenerate(sourceAccount.toLowerCase());
+        String message = new TweetGenerator(new Random()).loadAndGenerate(sourceAccount.toLowerCase());
         if (message == null || message.isEmpty()) {
             throw new RuntimeException("What up with the empty message?");
         }

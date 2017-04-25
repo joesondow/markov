@@ -3,6 +3,7 @@ package sondow.markov;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import twitter4j.JSONException;
 
@@ -13,11 +14,17 @@ import twitter4j.JSONException;
  */
 public class TweetGenerator {
 
+    Random random;
+
+    public TweetGenerator(Random random) {
+        this.random = random;
+    }
+
     /**
      * Manual test.
      */
     public static void main(String[] args) {
-        System.out.println(new TweetGenerator().loadAndGenerate("picardtips"));
+        System.out.println(new TweetGenerator(new Random()).loadAndGenerate("picardtips"));
     }
 
     /**
@@ -36,7 +43,7 @@ public class TweetGenerator {
         String phrase = null;
         try {
             List<String> corpus = parser.parse(folder);
-            MarkovChain markovChain = new MarkovChain(new Randomizer()).loadCorpus(corpus);
+            MarkovChain markovChain = new MarkovChain(random).loadCorpus(corpus);
 
             // Make phrases until one of them comes out short enough to tweet.
             boolean shortPhraseMade = false;

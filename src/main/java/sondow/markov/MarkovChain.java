@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Generates semi-random, semi-coherent phrases based on a source corpus of text. Written by @veryphatic
@@ -16,12 +17,12 @@ import java.util.Map;
 public class MarkovChain {
 
     private Map<String, List<String>> wordsToSuffixes = new HashMap<String, List<String>>();
-    private Randomizer random;
+    private Random random;
 
     private final String START = "__start__";
     private final String END = "__end__";
 
-    public MarkovChain(Randomizer random) {
+    public MarkovChain(Random random) {
         this.random = random;
 
         wordsToSuffixes.put(START, new ArrayList<String>());
@@ -117,7 +118,7 @@ public class MarkovChain {
 
         List<String> phrase = new ArrayList<String>();
         List<String> startWords = wordsToSuffixes.get(START);
-        String nextWord = random.oneOf(startWords);
+        String nextWord = startWords.get(random.nextInt(startWords.size()));
         phrase.add(nextWord);
 
         boolean suffixFound = true;
@@ -126,7 +127,7 @@ public class MarkovChain {
             if (options == null) {
                 suffixFound = false;
             } else {
-                nextWord = random.oneOf(options);
+                nextWord = options.get(random.nextInt(options.size()));
                 phrase.add(nextWord);
             }
         }
