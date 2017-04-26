@@ -3,9 +3,14 @@ package sondow.markov;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import twitter4j.JSONArray;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
 
 /**
  * Generates semi-random, semi-coherent phrases based on a source corpus of text. Written by @veryphatic
@@ -19,8 +24,8 @@ public class MarkovChain {
     private Map<String, List<String>> wordsToSuffixes = new HashMap<String, List<String>>();
     private Random random;
 
-    private final String START = "__start__";
-    private final String END = "__end__";
+    public static final String START = "__start__";
+    public static final String END = "__end__";
 
     public MarkovChain(Random random) {
         this.random = random;
@@ -109,6 +114,45 @@ public class MarkovChain {
                 }
             }
         }
+    }
+
+    /**
+     * Outputs the in-memory map of Markov Chain data into a JSON blob. This can be used to create a JSON file
+     * that requires no further processing in order to be used as a Markov Chain data set in the future.
+     *
+     * @return a JSON map of words to suffixes
+     */
+    public String toJson() {
+        JSONObject jsonObj = new JSONObject(wordsToSuffixes);
+        return jsonObj.toString();
+    }
+
+    public String toJsonPrettyPrinted() throws JSONException {
+        JSONObject jsonObj = new JSONObject(wordsToSuffixes);
+        return jsonObj.toString(2);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static MarkovChain fromJson(String jsonMap, Random random) throws JSONException {
+        Map<String, List<String>> wordsToSuffixes = new HashMap<String, List<String>>();
+        JSONObject jsonObj = new JSONObject(jsonMap);
+        Iterator<String> keys = jsonObj.keys();
+        while (keys.hasNext()) {
+            String word = keys.next();
+            JSONArray value = (JSONArray) jsonObj.opt(word);
+            List<String> list = new ArrayList<String>();
+
+            for (int i = 0; i < value.length(); i++) {
+                list.add((String) value.get(i));
+            }
+            wordsToSuffixes.put(word, list);
+        }
+
+        MarkovChain markov = new MarkovChain(random);
+
+        markov.wordsToSuffixes = wordsToSuffixes;
+
+        return markov;
     }
 
     /**
