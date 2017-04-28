@@ -1,8 +1,6 @@
 package sondow.markov;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 import twitter4j.JSONException;
@@ -35,15 +33,10 @@ public class TweetGenerator {
      * @return the new randomly generated markov phrase
      */
     public String loadAndGenerate(String folderName) {
-        JsonParser parser = new JsonParser();
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        String folderPath = classLoader.getResource(folderName + "/data/js/tweets/").getFile();
-        File folder = new File(folderPath);
         String phrase = null;
         try {
-            List<String> corpus = parser.parse(folder);
-            MarkovChain markovChain = new MarkovChain(random).loadCorpus(corpus);
+            MarkovChain markovChain = MarkovChain.loadFromArchive(folderName);
 
             // Make phrases until one of them comes out short enough to tweet.
             boolean shortPhraseMade = false;

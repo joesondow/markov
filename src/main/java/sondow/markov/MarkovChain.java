@@ -1,5 +1,7 @@
 package sondow.markov;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,6 +44,26 @@ public class MarkovChain {
             List<String> values = wordsToSuffixes.get(key);
             System.out.println(key + ": " + values);
         }
+    }
+
+    /**
+     * Processes all the js files under data/js/tweets under the specified folder on the classpath, to collect
+     * tweets and then generates a single new markov phrase from those tweets.
+     *
+     * @param folderName name of the folder on the classpath under which data/js/tweets contains all the js files
+     * @return the markov chain object containing the map of words to suffixes
+     * @throws JSONException if the json is unexpected
+     * @throws IOException if the files are unexpected
+     */
+    public static MarkovChain loadFromArchive(String folderName) throws IOException, JSONException {
+        JsonParser parser = new JsonParser();
+
+        ClassLoader classLoader = MarkovChain.class.getClassLoader();
+        String folderPath = classLoader.getResource(folderName + "/data/js/tweets/").getFile();
+        File folder = new File(folderPath);
+        List<String> corpus = parser.parse(folder);
+        MarkovChain markovChain = new MarkovChain(new Random()).loadCorpus(corpus);
+        return markovChain;
     }
 
     /**
