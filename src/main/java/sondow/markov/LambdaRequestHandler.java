@@ -63,7 +63,8 @@ public class LambdaRequestHandler implements RequestHandler<Object, Object> {
         cb.setOAuthAccessTokenSecret(System.getenv(targetAccount + "_twitter4j_oauth_accessTokenSecret"));
         Configuration config = cb.setTrimUserEnabled(true).build();
 
-        String message = new TweetGenerator(new Random()).loadAndGenerate(sourceAccount.toLowerCase());
+        String fileName = sourceAccount.toLowerCase() + "markov.json";
+        String message = new TweetGenerator(new Random()).loadAndGenerate(fileName);
         if (message == null || message.isEmpty()) {
             throw new RuntimeException("What up with the empty message?");
         }

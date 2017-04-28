@@ -1,6 +1,8 @@
 package sondow.markov;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Random;
 
 import twitter4j.JSONException;
@@ -22,21 +24,22 @@ public class TweetGenerator {
      * Manual test.
      */
     public static void main(String[] args) {
-        System.out.println(new TweetGenerator(new Random()).loadAndGenerate("picardtips"));
+        System.out.println(new TweetGenerator(new Random()).loadAndGenerate("rikergooglingmarkov.json"));
     }
 
     /**
      * Processes all the js files under data/js/tweets under the specified folder on the classpath, to collect
      * tweets and then generates a single new markov phrase from those tweets.
      *
-     * @param folderName name of the folder on the classpath under which data/js/tweets contains all the js files
+     * @param fileName name of the file containing the pre-processed json map
      * @return the new randomly generated markov phrase
      */
-    public String loadAndGenerate(String folderName) {
+    public String loadAndGenerate(String fileName) {
 
         String phrase = null;
         try {
-            MarkovChain markovChain = MarkovChain.loadFromArchive(folderName);
+            String jsonMap = new String(Files.readAllBytes(Paths.get("src/main/resources/" + fileName)));
+            MarkovChain markovChain = MarkovChain.fromJson(jsonMap, random);
 
             // Make phrases until one of them comes out short enough to tweet.
             boolean shortPhraseMade = false;
