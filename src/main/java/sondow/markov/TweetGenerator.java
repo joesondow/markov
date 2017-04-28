@@ -1,5 +1,6 @@
 package sondow.markov;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,7 +39,11 @@ public class TweetGenerator {
 
         String phrase = null;
         try {
-            String jsonMap = new String(Files.readAllBytes(Paths.get("src/main/resources/" + fileName)));
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            String filePath = classLoader.getResource(fileName).getFile();
+            File file = new File(filePath);
+            String jsonMap = new String(Files.readAllBytes(Paths.get(file.getPath())));
             MarkovChain markovChain = MarkovChain.fromJson(jsonMap, random);
 
             // Make phrases until one of them comes out short enough to tweet.

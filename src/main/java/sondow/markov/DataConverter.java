@@ -35,6 +35,8 @@ public class DataConverter {
             throws IOException, JSONException {
         MarkovChain markov = MarkovChain.loadFromArchive(inputFolderName);
         String preProcessedData = markov.toJson();
+        // This is sort of okay because this class is only used during development time.
+        // At production runtime, there is no src/main/resources folder.
         Path newFilePath = Paths.get("src/main/resources/" + outputFileName);
         newFilePath.toFile().createNewFile();
         Path filePath = Files.write(newFilePath, preProcessedData.getBytes());
