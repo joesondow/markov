@@ -54,7 +54,9 @@ public class TweetGenerator {
                     shortPhraseMade = true;
                 }
             }
-        } catch (IOException | JSONException e) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
