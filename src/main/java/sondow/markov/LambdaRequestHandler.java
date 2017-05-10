@@ -35,7 +35,7 @@ public class LambdaRequestHandler implements RequestHandler<Object, Object> {
         // one. The expected format has pairs as source, then a hyphen, then the target, with pairs separated by
         // commas:
         // joesondow-joeebooks,rikergoogling-rikerebooks,picardtips-picardebooks
-        String sourceTargetTwitterAccountPairsString = System.getenv("twitter_account_pairs_csv");
+        String sourceTargetTwitterAccountPairsString = Environment.get("twitter_account_pairs_csv");
         if (sourceTargetTwitterAccountPairsString == null) {
             throw new RuntimeException("Nothing set in env var twitter_account_pairs_csv");
         }
@@ -57,10 +57,10 @@ public class LambdaRequestHandler implements RequestHandler<Object, Object> {
         String targetAccount = sourceAndTargetAccount.get(1);
 
         // AWS Lambda only allows underscores in environment variables, not dots.
-        cb.setOAuthConsumerKey(System.getenv(targetAccount + "_twitter4j_oauth_consumerKey"));
-        cb.setOAuthConsumerSecret(System.getenv(targetAccount + "_twitter4j_oauth_consumerSecret"));
-        cb.setOAuthAccessToken(System.getenv(targetAccount + "_twitter4j_oauth_accessToken"));
-        cb.setOAuthAccessTokenSecret(System.getenv(targetAccount + "_twitter4j_oauth_accessTokenSecret"));
+        cb.setOAuthConsumerKey(Environment.get(targetAccount + "_twitter4j_oauth_consumerKey"));
+        cb.setOAuthConsumerSecret(Environment.get(targetAccount + "_twitter4j_oauth_consumerSecret"));
+        cb.setOAuthAccessToken(Environment.get(targetAccount + "_twitter4j_oauth_accessToken"));
+        cb.setOAuthAccessTokenSecret(Environment.get(targetAccount + "_twitter4j_oauth_accessTokenSecret"));
         Configuration config = cb.setTrimUserEnabled(true).build();
 
         String fileName = sourceAccount.toLowerCase() + "markov.json";

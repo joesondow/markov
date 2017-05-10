@@ -4,7 +4,7 @@
   <groupId>sondow</groupId>
   <artifactId>markov</artifactId>
   <name>markov</name>
-  <version>1.2</version>
+  <version>1.2.1</version>
   <description>Uses AWS Lambda to tweet phrases based on a Markov chain.</description>
   <dependencies>
     <dependency>
@@ -18,6 +18,12 @@
           <groupId>org.hamcrest</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
+      <version>1.16.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
