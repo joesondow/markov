@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -23,7 +24,7 @@ import twitter4j.JSONObject;
  */
 public class MarkovChain {
 
-    private Map<String, List<String>> wordsToSuffixes = new HashMap<String, List<String>>();
+    private Map<String, List<String>> wordsToSuffixes = new LinkedHashMap<String, List<String>>();
     private Random random;
 
     public static final String START = "__start__";
