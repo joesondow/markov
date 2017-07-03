@@ -4,7 +4,16 @@ apply plugin: 'maven'
 group = 'sondow'
 version = '1.2.1'
 
-description = """markov"""
+description = """\
+Uses AWS Lambda to tweet phrases based on a Markov chain.
+------------------------------------------
+Project version: ${version}
+Gradle version: ${gradle.gradleVersion}
+------------------------------------------
+"""
+	
+	
+	
 
 sourceCompatibility = 1.5
 targetCompatibility = 1.5
