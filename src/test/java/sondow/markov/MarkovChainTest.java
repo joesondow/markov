@@ -38,7 +38,7 @@ public class MarkovChainTest {
         MarkovChain markov = new MarkovChain(new Random()).loadCorpus(corpus);
         String actualMarkovJson = markov.toJson();
         System.out.println(actualMarkovJson);
-        String markovFilePath = classLoader.getResource("picardtipsmarkov.json").getFile();
+        String markovFilePath = classLoader.getResource("picardtipstestmarkov.json").getFile();
         String expectedMarkovJson = new String(Files.readAllBytes(Paths.get(markovFilePath)));
 
         assertEquals(expectedMarkovJson, actualMarkovJson);
@@ -53,7 +53,7 @@ public class MarkovChainTest {
     @Test
     public void testFromJson() throws IOException, JSONException {
         ClassLoader classLoader = getClass().getClassLoader();
-        String markovFilePath = classLoader.getResource("picardtipsmarkov.json").getFile();
+        String markovFilePath = classLoader.getResource("picardtipstestmarkov.json").getFile();
         String markovJsonFromFile = new String(Files.readAllBytes(Paths.get(markovFilePath)));
         MarkovChain markov = MarkovChain.fromJson(markovJsonFromFile, new Random());
         assertEquals(markovJsonFromFile, markov.toJson());
@@ -62,7 +62,7 @@ public class MarkovChainTest {
     @Test
     public void testGeneratePhrase() throws IOException, JSONException {
         ClassLoader classLoader = getClass().getClassLoader();
-        String markovFilePath = classLoader.getResource("picardtipsmarkov.json").getFile();
+        String markovFilePath = classLoader.getResource("picardtipstestmarkov.json").getFile();
         String markovJsonFromFile = new String(Files.readAllBytes(Paths.get(markovFilePath)));
         MarkovChain markov = MarkovChain.fromJson(markovJsonFromFile, new Random(1L));
         String phrase1 = markov.generatePhrase();
