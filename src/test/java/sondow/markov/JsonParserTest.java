@@ -28,9 +28,11 @@ public class JsonParserTest {
         JsonParser parser = new JsonParser();
 
         List<String> actual = parser.parse(folder);
-        List<String> expected = Arrays.asList("Picard management tip: When you stand up, straighten your shirt.",
+        List<String> expected = Arrays.asList(
+                "Picard management tip: When you stand up, straighten your shirt.",
                 "Picard management tip: Say yes whenever possible, except when your tactical officer recommends attacking.",
-                "Picard management tip: Enunciate.", "Picard management tip: Ensure chocolate is available.",
+                "Picard management tip: Enunciate.",
+                "Picard management tip: Ensure chocolate is available.",
                 "Picard programming tip: The first version of any software will be buggy. That's why so many holodeck programs try to kill you.",
                 "Picard management tip: Hire aliens. It's no big deal.",
                 "Picard management tip: Tolerate failure, not incompetence. Learn the difference.",

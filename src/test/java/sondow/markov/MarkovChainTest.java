@@ -70,13 +70,15 @@ public class MarkovChainTest {
         String phrase3 = markov.generatePhrase();
         String phrase4 = markov.generatePhrase();
 
-        assertEquals("Picard management tip: Tolerate failure, not incompetence. Learn the people can handle "
-                + "things fine without you.", phrase1);
-        assertEquals("Picard management tip: If you lose one crew member, mourn appropriately. If you aren't "
-                + "going boldly enough.", phrase2);
-        assertEquals("Picard management tip: Tolerate failure, not sure what to take a volunteer. Don't assume "
-                + "anything is possible or ask for a dramatic pause. Maybe somebody else will fix it.", phrase3);
-        assertEquals("Picard management tip: If the people can handle things fine without you.", phrase4);
+        assertEquals("Picard management tip: Tolerate failure, not incompetence. Learn the "
+                + "people can handle things fine without you.", phrase1);
+        assertEquals("Picard management tip: If you lose one crew member, mourn appropriately. "
+                + "If you aren't going boldly enough.", phrase2);
+        assertEquals("Picard management tip: Tolerate failure, not sure what to take a volunteer. "
+                + "Don't assume anything is possible or ask for a dramatic pause. Maybe "
+                + "somebody else will fix it.", phrase3);
+        assertEquals("Picard management tip: If the people can handle things fine without you.",
+                phrase4);
     }
 
 }

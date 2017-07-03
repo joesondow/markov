@@ -9,7 +9,8 @@ import java.util.Random;
 import twitter4j.JSONException;
 
 /**
- * Processes all the source data for a specific account, and creates a new markov phrase from that data.
+ * Processes all the source data for a specific account, and creates a new markov phrase from that
+ * data.
  *
  * @author @JoeSondow
  */
@@ -25,12 +26,13 @@ public class TweetGenerator {
      * Manual test.
      */
     public static void main(String[] args) {
-        System.out.println(new TweetGenerator(new Random()).loadAndGenerate("rikergooglingmarkov.json"));
+        String msg = new TweetGenerator(new Random()).loadAndGenerate("rikergooglingmarkov.json");
+        System.out.println(msg);
     }
 
     /**
-     * Processes all the js files under data/js/tweets under the specified folder on the classpath, to collect
-     * tweets and then generates a single new markov phrase from those tweets.
+     * Processes all the js files under data/js/tweets under the specified folder on the classpath,
+     * to collect tweets and then generates a single new markov phrase from those tweets.
      *
      * @param fileName name of the file containing the pre-processed json map
      * @return the new randomly generated markov phrase

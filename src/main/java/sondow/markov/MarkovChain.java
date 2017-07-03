@@ -15,8 +15,8 @@ import twitter4j.JSONException;
 import twitter4j.JSONObject;
 
 /**
- * Generates semi-random, semi-coherent phrases based on a source corpus of text. Written by @veryphatic
- * https://gist.github.com/veryphatic/3190969 with modifications by @JoeSondow.
+ * Generates semi-random, semi-coherent phrases based on a source corpus of text. Written
+ * by @veryphatic https://gist.github.com/veryphatic/3190969 with modifications by @JoeSondow.
  *
  * @author @veryphatic
  * @author @JoeSondow
@@ -47,10 +47,11 @@ public class MarkovChain {
     }
 
     /**
-     * Processes all the js files under data/js/tweets under the specified folder on the classpath, to collect
-     * tweets and then generates a single new markov phrase from those tweets.
+     * Processes all the js files under data/js/tweets under the specified folder on the classpath,
+     * to collect tweets and then generates a single new markov phrase from those tweets.
      *
-     * @param folderName name of the folder on the classpath under which data/js/tweets contains all the js files
+     * @param folderName name of the folder on the classpath under which data/js/tweets contains all
+     *            the js files
      * @return the markov chain object containing the map of words to suffixes
      * @throws JSONException if the json is unexpected
      * @throws IOException if the files are unexpected
@@ -67,7 +68,8 @@ public class MarkovChain {
     }
 
     /**
-     * Fills in the markov data structure from a corpus of text input in the form of a list of strings.
+     * Fills in the markov data structure from a corpus of text input in the form of a list of
+     * strings.
      *
      * @param corpus the source text
      * @return this MarkovChain, for method chaining
@@ -96,8 +98,9 @@ public class MarkovChain {
                     nextWord = words[i + 1];
                 }
 
-                // Omit twitter usernames. I don't want my bots talking to every person I've ever talked to.
-                // I also don't want links to things, and I don't want to spam any hashtags I've used before.
+                // Omit twitter usernames. I don't want my bots talking to every person I've ever
+                // talked to. I also don't want links to things, and I don't want to spam any
+                // hashtags I've used before.
                 List<String> prefixBlacklist = Arrays.asList("@", "\"@", ".@", "http", "#", "\"#");
 
                 boolean skipThisWord = false;
@@ -139,8 +142,9 @@ public class MarkovChain {
     }
 
     /**
-     * Outputs the in-memory map of Markov Chain data into a JSON blob. This can be used to create a JSON file
-     * that requires no further processing in order to be used as a Markov Chain data set in the future.
+     * Outputs the in-memory map of Markov Chain data into a JSON blob. This can be used to create a
+     * JSON file that requires no further processing in order to be used as a Markov Chain data set
+     * in the future.
      *
      * @return a JSON map of words to suffixes
      */
